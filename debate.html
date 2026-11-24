@@ -1,0 +1,1215 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Royal Decrees & Civil Debates | JW English</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@600;700;800&family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="icon" type="image/png" href="favicon.png">
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    fontFamily: {
+                        sans: ['Plus Jakarta Sans', 'sans-serif'],
+                        display: ['Cinzel', 'serif'],
+                    },
+                    colors: {
+                        royal: {
+                            50: '#fdfbf7',
+                            100: '#f7f1e3',
+                            200: '#eddcb9',
+                            700: '#8a621c',
+                            800: '#5c3f10',
+                            900: '#362307',
+                        },
+                        slateInk: {
+                            800: '#1e293b',
+                            900: '#0f172a',
+                            950: '#090d16',
+                        }
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        body {
+            background-color: #f4f1ea;
+            background-image: radial-gradient(#d6cbb5 1px, transparent 1px);
+            background-size: 24px 24px;
+        }
+        .debate-mode {
+            background-color: #111827;
+            background-image: radial-gradient(#374151 1px, transparent 1px);
+            background-size: 24px 24px;
+        }
+        .card-shadow {
+            box-shadow: 0 20px 40px -15px rgba(15, 23, 42, 0.15);
+        }
+        .fade-in {
+            animation: fadeIn 0.35s ease-out forwards;
+        }
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(8px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+    </style>
+</head>
+<body id="app-body" class="text-slate-800 font-sans antialiased min-h-screen flex flex-col transition-colors duration-500">
+
+    <!-- Top Bar (Editorial Header with Attached Logo, Level Toggle & Part Switcher) -->
+    <header id="top-header" class="bg-white/95 backdrop-blur-md border-b border-stone-200 sticky top-0 z-50 transition-colors duration-500">
+        <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-3 sm:py-0 sm:h-20 flex flex-wrap items-center justify-between gap-3">
+            <!-- Logo Asset -->
+            <a href="https://jiwynne72-tech.github.io/james/" target="_blank" rel="noopener" class="flex items-center gap-3.5 group">
+                <img src="./my logo en_2.png" 
+                     onerror="this.onerror=null; this.src='./my logo en2.png';" 
+                     alt="JW English Lessons Logo" 
+                     class="h-11 sm:h-12 w-auto object-contain transition-transform group-hover:scale-105" />
+                <div class="flex flex-col">
+                    <span id="brand-title" class="font-display text-base sm:text-lg font-extrabold tracking-wide text-slate-900 transition-colors">
+                        JW ENGLISH
+                    </span>
+                    <span class="text-[10px] sm:text-[11px] font-semibold uppercase tracking-widest text-amber-700">
+                        Speaking & Reading Lab
+                    </span>
+                </div>
+            </a>
+
+            <!-- Controls Cluster: Difficulty Selector + Mode Switcher -->
+            <div class="flex flex-wrap items-center gap-2 sm:gap-3">
+                <!-- Easy / Harder Level Selector -->
+                <div class="flex items-center gap-1 bg-stone-100 p-1 rounded-xl border border-stone-200" id="level-switcher" title="Switch English reading & vocabulary level">
+                    <button onclick="setDifficulty('easy')" id="btn-easy" class="px-3 py-1.5 rounded-lg text-xs font-bold transition-all flex items-center gap-1.5 text-slate-600 hover:text-slate-900">
+                        <i class="fa-solid fa-seedling text-emerald-600"></i>
+                        <span>Easy</span>
+                    </button>
+                    <button onclick="setDifficulty('harder')" id="btn-harder" class="px-3 py-1.5 rounded-lg text-xs font-bold transition-all flex items-center gap-1.5 bg-slate-800 text-white shadow-sm">
+                        <i class="fa-solid fa-graduation-cap text-amber-400"></i>
+                        <span>Harder</span>
+                    </button>
+                </div>
+
+                <!-- Mode Switcher Pills -->
+                <div class="flex items-center gap-1.5 bg-stone-100 p-1.5 rounded-2xl border border-stone-200" id="mode-switcher">
+                    <button onclick="switchPart(1)" id="tab-part1" class="px-3.5 py-2 rounded-xl text-xs sm:text-sm font-bold transition-all flex items-center gap-2 bg-amber-700 text-white shadow-sm">
+                        <i class="fa-solid fa-crown"></i>
+                        <span>Part 1: King or Queen</span>
+                    </button>
+                    <button onclick="switchPart(2)" id="tab-part2" class="px-3.5 py-2 rounded-xl text-xs sm:text-sm font-bold transition-all flex items-center gap-2 text-slate-600 hover:text-slate-900">
+                        <i class="fa-solid fa-scale-unbalanced-flip"></i>
+                        <span>Part 2: Agree to Disagree</span>
+                    </button>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <!-- Main Workspace -->
+    <main class="flex-grow max-w-5xl w-full mx-auto px-4 sm:px-6 lg:px-8 py-8 sm:py-12">
+
+        <!-- ==================== PART ONE: KING OR QUEEN FOR A DAY ==================== -->
+        <section id="section-part1" class="space-y-6 fade-in">
+            <!-- Banner -->
+            <div class="flex flex-col sm:flex-row sm:items-end justify-between gap-4 border-b border-stone-300 pb-5">
+                <div>
+                    <span class="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-amber-100 text-amber-900 text-xs font-bold uppercase tracking-wider mb-2">
+                        <i class="fa-solid fa-scroll"></i> Part One • Second Conditional & Leadership
+                    </span>
+                    <h1 class="font-display text-2xl sm:text-4xl font-bold text-slate-900">
+                        If I Were King or Queen for a Day
+                    </h1>
+                </div>
+                <div class="flex items-center gap-2">
+                    <button onclick="reshufflePart1()" class="px-3.5 py-2 rounded-xl bg-white border border-stone-300 text-stone-700 hover:bg-amber-50 hover:border-amber-400 text-xs font-semibold transition-all flex items-center gap-1.5 shadow-sm" title="Shuffle all 15 scenarios">
+                        <i class="fa-solid fa-shuffle text-amber-700"></i>
+                        <span>Reshuffle Deck</span>
+                    </button>
+                    <span id="p1-counter" class="px-3.5 py-2 rounded-xl bg-slate-900 text-amber-300 text-xs font-bold tracking-wider">
+                        1 / 15
+                    </span>
+                </div>
+            </div>
+
+            <!-- Main Scenario Card -->
+            <div class="bg-white rounded-3xl border border-stone-200 card-shadow overflow-hidden">
+                <!-- Royal Top Accent Bar -->
+                <div class="h-2 bg-gradient-to-r from-amber-600 via-yellow-500 to-amber-700"></div>
+                
+                <div class="p-6 sm:p-10 space-y-6">
+                    <!-- Category, Level Badge & Audio Read-Aloud -->
+                    <div class="flex flex-wrap items-center justify-between gap-3">
+                        <div class="flex items-center gap-2">
+                            <span id="p1-tag" class="text-xs font-bold uppercase tracking-widest text-amber-800 bg-amber-50 border border-amber-200 px-3 py-1 rounded-lg">
+                                Royal Crisis
+                            </span>
+                            <span id="p1-level-badge" class="text-[11px] font-bold uppercase tracking-wider px-2.5 py-1 rounded-lg bg-slate-100 text-slate-700 border border-slate-200">
+                                Harder Level
+                            </span>
+                        </div>
+                        <button onclick="speakText('p1')" id="p1-listen-btn" class="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-xl bg-stone-100 hover:bg-amber-100 text-slate-700 hover:text-amber-900 text-xs font-semibold transition-colors">
+                            <i class="fa-solid fa-volume-high text-amber-700"></i>
+                            <span>Listen to Briefing</span>
+                        </button>
+                    </div>
+
+                    <!-- Scenario Title -->
+                    <h2 id="p1-title" class="font-display text-2xl sm:text-3xl font-bold text-slate-900 leading-snug">
+                        Loading Scenario...
+                    </h2>
+
+                    <!-- Reading Practice Passage -->
+                    <div class="bg-royal-50 border-l-4 border-amber-600 p-5 sm:p-6 rounded-r-2xl space-y-2">
+                        <div class="text-[11px] font-bold uppercase tracking-wider text-amber-800 flex items-center gap-1.5">
+                            <i class="fa-solid fa-book-open"></i> Reading Briefing
+                        </div>
+                        <p id="p1-reading" class="text-slate-700 text-base sm:text-lg leading-relaxed">
+                        </p>
+                    </div>
+
+                    <!-- Open-Ended Question Box -->
+                    <div class="bg-slate-900 text-white p-6 rounded-2xl space-y-3">
+                        <div class="text-xs font-bold uppercase tracking-widest text-amber-400">
+                            Your Royal Decree — Open Question
+                        </div>
+                        <p id="p1-question" class="text-lg sm:text-xl font-semibold leading-snug">
+                        </p>
+                        <p id="p1-followup" class="text-xs sm:text-sm text-slate-300 italic pt-1">
+                        </p>
+                    </div>
+
+                    <!-- Collapsible Vocabulary & Grammar Scaffolding -->
+                    <div class="border-t border-stone-200 pt-4">
+                        <button onclick="toggleDrawer('p1-scaffold')" class="flex items-center justify-between w-full text-left text-xs font-bold uppercase tracking-wider text-slate-500 hover:text-amber-800 transition-colors">
+                            <span><i class="fa-solid fa-wand-magic-sparkles mr-1.5 text-amber-600"></i> Speaking Starters & Useful Vocabulary (Click to expand)</span>
+                            <i id="p1-scaffold-icon" class="fa-solid fa-chevron-down transition-transform"></i>
+                        </button>
+                        <div id="p1-scaffold" class="hidden mt-4 grid grid-cols-1 md:grid-cols-2 gap-4 bg-stone-50 p-4 rounded-2xl border border-stone-200">
+                            <div>
+                                <h4 class="text-xs font-bold text-slate-800 uppercase mb-2">Useful Structures</h4>
+                                <ul id="p1-starters" class="text-xs text-slate-600 space-y-1.5">
+                                    <li>• "If I were King/Queen, my first decree would be to..."</li>
+                                    <li>• "Rather than punishing people, I would..."</li>
+                                    <li>• "The main consequence of this policy would be..."</li>
+                                </ul>
+                            </div>
+                            <div>
+                                <h4 class="text-xs font-bold text-slate-800 uppercase mb-2">Key Words from Text</h4>
+                                <div id="p1-vocab" class="flex flex-wrap gap-1.5"></div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Student / Teacher Scratchpad for Royal Decree -->
+                    <div class="space-y-2">
+                        <label for="p1-notes" class="block text-xs font-bold uppercase tracking-wider text-slate-500">
+                            Draft Your Decree or Key Notes (Optional)
+                        </label>
+                        <textarea id="p1-notes" rows="2" placeholder="Jot down your main arguments before speaking..." class="w-full rounded-xl border border-stone-300 bg-stone-50 px-4 py-2.5 text-sm text-slate-800 focus:outline-none focus:border-amber-600 focus:bg-white transition-colors"></textarea>
+                    </div>
+                </div>
+
+                <!-- Card Navigation Footer -->
+                <div class="bg-stone-100 px-6 sm:px-10 py-4 border-t border-stone-200 flex items-center justify-between">
+                    <button onclick="prevCard(1)" class="px-5 py-2.5 rounded-xl bg-white border border-stone-300 text-slate-800 hover:bg-stone-200 font-bold text-sm transition-all flex items-center gap-2 shadow-sm">
+                        <i class="fa-solid fa-arrow-left"></i>
+                        <span>Previous</span>
+                    </button>
+
+                    <div class="hidden sm:flex items-center gap-1.5" id="p1-dots"></div>
+
+                    <button onclick="nextCard(1)" class="px-6 py-2.5 rounded-xl bg-amber-700 hover:bg-amber-800 text-white font-bold text-sm transition-all flex items-center gap-2 shadow-md">
+                        <span>Next Scenario</span>
+                        <i class="fa-solid fa-arrow-right"></i>
+                    </button>
+                </div>
+            </div>
+        </section>
+
+        <!-- ==================== PART TWO: AGREE TO DISAGREE ==================== -->
+        <section id="section-part2" class="hidden space-y-6 fade-in">
+            <!-- Banner -->
+            <div class="flex flex-col sm:flex-row sm:items-end justify-between gap-4 border-b border-slate-700 pb-5">
+                <div>
+                    <span class="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-rose-500/20 text-rose-300 border border-rose-500/30 text-xs font-bold uppercase tracking-wider mb-2">
+                        <i class="fa-solid fa-fire-flame-curved"></i> Part Two • Debate, Persuasion & Nuance
+                    </span>
+                    <h1 class="font-display text-2xl sm:text-4xl font-bold text-white">
+                        Agree to Disagree
+                    </h1>
+                </div>
+                <div class="flex items-center gap-2">
+                    <button onclick="reshufflePart2()" class="px-3.5 py-2 rounded-xl bg-slate-800 border border-slate-600 text-slate-200 hover:bg-slate-700 text-xs font-semibold transition-all flex items-center gap-1.5">
+                        <i class="fa-solid fa-shuffle text-rose-400"></i>
+                        <span>Reshuffle Topics</span>
+                    </button>
+                    <span id="p2-counter" class="px-3.5 py-2 rounded-xl bg-rose-600 text-white text-xs font-bold tracking-wider">
+                        1 / 12
+                    </span>
+                </div>
+            </div>
+
+            <!-- Main Provocation Card -->
+            <div class="bg-slate-900 rounded-3xl border border-slate-700/80 shadow-2xl overflow-hidden text-slate-100">
+                <div class="h-2 bg-gradient-to-r from-rose-600 via-amber-500 to-sky-500"></div>
+
+                <div class="p-6 sm:p-10 space-y-6">
+                    <!-- Top Metadata + Level Badge + Audio + Debate Timer -->
+                    <div class="flex flex-wrap items-center justify-between gap-3">
+                        <div class="flex items-center gap-2">
+                            <span id="p2-tag" class="text-xs font-bold uppercase tracking-widest text-rose-300 bg-rose-950/80 border border-rose-700/50 px-3 py-1 rounded-lg">
+                                Society & Ethics
+                            </span>
+                            <span id="p2-level-badge" class="text-[11px] font-bold uppercase tracking-wider px-2.5 py-1 rounded-lg bg-slate-800 text-amber-300 border border-slate-700">
+                                Harder Level
+                            </span>
+                        </div>
+
+                        <div class="flex items-center gap-2">
+                            <!-- 2-Minute Debate Timer -->
+                            <button onclick="toggleDebateTimer()" id="timer-btn" class="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-xl bg-slate-800 hover:bg-slate-700 border border-slate-600 text-amber-300 text-xs font-bold transition-colors" title="Start or reset 2-minute speaking challenge">
+                                <i class="fa-solid fa-stopwatch"></i>
+                                <span id="timer-display">02:00</span>
+                            </button>
+
+                            <button onclick="speakText('p2')" id="p2-listen-btn" class="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-xl bg-slate-800 hover:bg-slate-700 border border-slate-600 text-slate-200 text-xs font-semibold transition-colors">
+                                <i class="fa-solid fa-volume-high text-sky-400"></i>
+                                <span>Listen</span>
+                            </button>
+                        </div>
+                    </div>
+
+                    <!-- Topic Headline -->
+                    <h2 id="p2-title" class="font-display text-2xl sm:text-3xl font-bold text-white leading-snug">
+                        Loading Provocation...
+                    </h2>
+
+                    <!-- Provocative Paragraph -->
+                    <div class="bg-slate-950/90 border-l-4 border-rose-500 p-5 sm:p-6 rounded-r-2xl space-y-2">
+                        <div class="text-[11px] font-bold uppercase tracking-wider text-rose-400 flex items-center gap-1.5">
+                            <i class="fa-solid fa-quote-left"></i> The Provocation
+                        </div>
+                        <p id="p2-text" class="text-slate-200 text-base sm:text-lg leading-relaxed">
+                        </p>
+                    </div>
+
+                    <!-- Stance Selector (Interactive Classroom Poll / Devil's Advocate) -->
+                    <div class="bg-slate-800/70 p-5 rounded-2xl border border-slate-700 space-y-3">
+                        <div class="flex flex-wrap items-center justify-between gap-2">
+                            <span class="text-xs font-bold uppercase tracking-wider text-slate-300">
+                                Where Do You Stand?
+                            </span>
+                            <button onclick="assignDevilsAdvocate()" class="text-xs font-bold text-amber-400 hover:text-amber-300 flex items-center gap-1.5">
+                                <i class="fa-solid fa-masks-theater"></i>
+                                <span>Devil's Advocate Spin</span>
+                            </button>
+                        </div>
+                        
+                        <div class="grid grid-cols-1 sm:grid-cols-3 gap-2.5">
+                            <button onclick="setStance('agree')" id="stance-agree" class="stance-btn py-2.5 px-4 rounded-xl border border-slate-600 bg-slate-900/60 hover:border-emerald-500 text-xs sm:text-sm font-bold text-emerald-400 transition-all flex items-center justify-center gap-2">
+                                <i class="fa-solid fa-thumbs-up"></i> Strongly Agree
+                            </button>
+                            <button onclick="setStance('nuance')" id="stance-nuance" class="stance-btn py-2.5 px-4 rounded-xl border border-slate-600 bg-slate-900/60 hover:border-amber-400 text-xs sm:text-sm font-bold text-amber-300 transition-all flex items-center justify-center gap-2">
+                                <i class="fa-solid fa-scale-balanced"></i> It Depends / Nuanced
+                            </button>
+                            <button onclick="setStance('disagree')" id="stance-disagree" class="stance-btn py-2.5 px-4 rounded-xl border border-slate-600 bg-slate-900/60 hover:border-rose-500 text-xs sm:text-sm font-bold text-rose-400 transition-all flex items-center justify-center gap-2">
+                                <i class="fa-solid fa-thumbs-down"></i> Strongly Disagree
+                            </button>
+                        </div>
+
+                        <p id="stance-feedback" class="text-xs text-slate-300 italic pt-1 hidden"></p>
+                    </div>
+
+                    <!-- Two-Sided Prompts & Polite Disagreement Phrases -->
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                        <div class="bg-emerald-950/30 border border-emerald-800/50 p-4 rounded-2xl">
+                            <h4 class="text-xs font-bold uppercase tracking-wider text-emerald-400 mb-1.5">
+                                <i class="fa-solid fa-plus-circle mr-1"></i> The Case For
+                            </h4>
+                            <p id="p2-for" class="text-xs sm:text-sm text-slate-300 leading-relaxed"></p>
+                        </div>
+                        <div class="bg-rose-950/30 border border-rose-800/50 p-4 rounded-2xl">
+                            <h4 class="text-xs font-bold uppercase tracking-wider text-rose-400 mb-1.5">
+                                <i class="fa-solid fa-minus-circle mr-1"></i> The Case Against
+                            </h4>
+                            <p id="p2-against" class="text-xs sm:text-sm text-slate-300 leading-relaxed"></p>
+                        </div>
+                    </div>
+
+                    <!-- Diplomatic Disagreement Toolkit -->
+                    <div class="border-t border-slate-800 pt-4">
+                        <button onclick="toggleDrawer('p2-phrases')" class="flex items-center justify-between w-full text-left text-xs font-bold uppercase tracking-wider text-slate-400 hover:text-amber-400 transition-colors">
+                            <span><i class="fa-solid fa-comments mr-1.5 text-sky-400"></i> Useful English Phrases for Agreeing & Disagreeing</span>
+                            <i id="p2-phrases-icon" class="fa-solid fa-chevron-down transition-transform"></i>
+                        </button>
+                        <div id="p2-phrases" class="hidden mt-3 grid grid-cols-1 sm:grid-cols-2 gap-2.5 text-xs text-slate-300 bg-slate-950/70 p-4 rounded-2xl border border-slate-800">
+                            <div>• "I see where you're coming from, however..."</div>
+                            <div>• "That's a fair point on paper, yet in practice..."</div>
+                            <div>• "I'm afraid I have to push back on that idea because..."</div>
+                            <div>• "Let's play devil's advocate for a moment..."</div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Card Navigation Footer -->
+                <div class="bg-slate-950 px-6 sm:px-10 py-4 border-t border-slate-800 flex items-center justify-between">
+                    <button onclick="prevCard(2)" class="px-5 py-2.5 rounded-xl bg-slate-800 border border-slate-700 text-slate-200 hover:bg-slate-700 font-bold text-sm transition-all flex items-center gap-2">
+                        <i class="fa-solid fa-arrow-left"></i>
+                        <span>Previous</span>
+                    </button>
+
+                    <div class="hidden sm:flex items-center gap-1.5" id="p2-dots"></div>
+
+                    <button onclick="nextCard(2)" class="px-6 py-2.5 rounded-xl bg-rose-600 hover:bg-rose-500 text-white font-bold text-sm transition-all flex items-center gap-2 shadow-lg shadow-rose-950/50">
+                        <span>Next Topic</span>
+                        <i class="fa-solid fa-arrow-right"></i>
+                    </button>
+                </div>
+            </div>
+        </section>
+
+    </main>
+
+    <!-- Footer (Preserved Logo, Links & Copyright from attached index.html) -->
+    <footer class="bg-slate-950 border-t border-slate-800 py-4 mt-auto">
+        <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 flex flex-col sm:flex-row items-center justify-between gap-3 text-center">
+            <div class="flex items-center gap-3">
+                <img src="./my logo en_2.png" 
+                     onerror="this.onerror=null; this.src='./my logo en2.png';" 
+                     alt="JW English Lessons Logo" 
+                     class="h-7 w-auto opacity-90" />
+                <span class="text-xs text-slate-400">
+                    &copy; 2026 JW English | James Wynne. All rights reserved.
+                </span>
+            </div>
+            <div class="text-xs text-slate-400 flex items-center gap-2">
+                <a href="mailto:jwenglish@outlook.it" class="hover:text-amber-400 transition-colors">email</a>
+                <span class="text-slate-600">|</span>
+                <a href="https://jiwynne72-tech.github.io/james/" target="_blank" rel="noopener" class="hover:text-amber-400 transition-colors">website</a>
+                <span class="text-slate-600">|</span>
+                <a href="https://wa.me/00393515316723" target="_blank" rel="noopener" class="hover:text-amber-400 transition-colors">whatsapp</a>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        // ==================== DATA: PART 1 (15 ROYAL SCENARIOS - EASY & HARDER) ====================
+        const part1Data = [
+            {
+                tag: "Urban & Transport",
+                easy: {
+                    title: "Too Many Cars in the City",
+                    reading: "Every morning, two million people sit in terrible traffic in your capital city. The air is very dirty, ambulances get stuck on the roads, and people arrive late to work. However, taxi drivers, shop owners, and drivers from outside the city get angry whenever anyone talks about banning cars.",
+                    question: "If you were King or Queen for a day, how would you fix the traffic problem without making people angry?",
+                    followup: "Think about: Would you ban cars, make buses and trains free, or charge drivers a fee?",
+                    vocab: ["traffic", "dirty", "stuck", "banning", "charge a fee"]
+                },
+                harder: {
+                    title: "The Gridlocked Capital",
+                    reading: "Every weekday morning, over two million commuters sit motionless in traffic entering your capital city. Air pollution has reached hazardous levels, emergency ambulances are routinely delayed, and economic productivity is falling. However, taxi drivers, shopkeepers, and suburban voters fiercely oppose any restrictions on private cars.",
+                    question: "If you were King or Queen for a day, how would you solve the city's traffic crisis without triggering a rebellion?",
+                    followup: "Consider: Would you ban private vehicles, make public transport free, or tax rush-hour driving?",
+                    vocab: ["gridlocked", "commuters", "hazardous", "suburban", "rebellion"]
+                }
+            },
+            {
+                tag: "Education Reform",
+                easy: {
+                    title: "Old-Fashioned Schools",
+                    reading: "Students in your country spend twelve years memorizing history dates and grammar rules. However, many finish school without knowing how to manage money, cook a healthy meal, or spot fake news online. Teachers feel tired and stressed, and parents worry that changing exams will hurt their children's futures.",
+                    question: "If you could change schools for one day, which subject would you remove and what new subject would you add?",
+                    followup: "Explain how your new subject would help young people in real life.",
+                    vocab: ["memorizing", "manage money", "spot", "fake news", "remove"]
+                },
+                harder: {
+                    title: "The Outdated School Curriculum",
+                    reading: "Students across your kingdom spend twelve years memorizing historical dates and grammar rules, yet many leave school without knowing how to manage personal finances, cook a healthy meal, or spot fake news online. Teachers complain they are overworked, and parents worry that changing exams will hurt university admissions.",
+                    question: "If you had absolute royal authority over education for twenty-four hours, what single subject would you abolish and what would you put in its place?",
+                    followup: "Explain how your reform would prepare young citizens for real adult life.",
+                    vocab: ["curriculum", "memorizing", "finances", "abolish", "admissions"]
+                }
+            },
+            {
+                tag: "Technology & AI",
+                easy: {
+                    title: "Robots Taking Jobs",
+                    reading: "A big technology company in your country has built smart machines that can do 60% of factory, delivery, and office jobs much faster and cheaper than humans. Company bosses are making huge profits, while thousands of hard-working people are worried about losing their jobs.",
+                    question: "If you were King or Queen today, what rules would you make for robots and AI to protect workers?",
+                    followup: "Would you tax companies that use robots, pay workers extra money, or limit new machines?",
+                    vocab: ["delivery", "profits", "worried", "protect", "limit"]
+                },
+                harder: {
+                    title: "The Automation Wave",
+                    reading: "A major technology guild in your realm has invented autonomous machines capable of performing 60% of factory, delivery, and administrative jobs at a fraction of human cost. Business owners are celebrating record profits, while tens of thousands of loyal workers face sudden unemployment and uncertainty.",
+                    question: "If you wore the crown today, how would you regulate artificial intelligence and protect displaced workers?",
+                    followup: "Would you tax robots, introduce a universal basic income, or limit automation?",
+                    vocab: ["guild", "autonomous", "fraction", "displaced", "regulate"]
+                }
+            },
+            {
+                tag: "Work & Leisure",
+                easy: {
+                    title: "Everyone Is Too Tired",
+                    reading: "Royal doctors say that stress, poor sleep, and extreme tiredness are the biggest health problems in your kingdom. People check work emails late at night, rarely take real holidays, and feel bad when they sit down to relax.",
+                    question: "If you could make one new royal law to help people rest and enjoy life, what would it be?",
+                    followup: "Think about a four-day workweek, turning off work phones at 6 PM, or longer holidays.",
+                    vocab: ["stress", "tiredness", "rarely", "relax", "royal law"]
+                },
+                harder: {
+                    title: "The Burnout Epidemic",
+                    reading: "Recent royal physicians report that stress, insomnia, and chronic exhaustion have become the number-one health threat in your kingdom. Citizens answer work emails late into the night, rarely take full vacations, and feel guilty whenever they are not being productive.",
+                    question: "If you could pass one royal law to restore work-life balance across the nation, what would it decree?",
+                    followup: "Think about a four-day workweek, a 'right to disconnect' after 6 PM, or mandatory siestas.",
+                    vocab: ["physicians", "insomnia", "chronic", "exhaustion", "decree"]
+                }
+            },
+            {
+                tag: "Environment & Tourism",
+                easy: {
+                    title: "Too Many Tourists by the Sea",
+                    reading: "Your kingdom's most famous seaside city gets fifteen million visitors every year. Tourism brings a lot of money, but giant ships are damaging the old buildings, local people cannot pay the high rents, and traditional bakeries are closing to become souvenir shops.",
+                    question: "If you were ruler for a day, how would you save this beautiful city from too many tourists?",
+                    followup: "How can you help local people live there while still welcoming visitors?",
+                    vocab: ["seaside", "damaging", "high rents", "bakeries", "local people"]
+                },
+                harder: {
+                    title: "The Sinking Jewel of the Coast",
+                    reading: "Your kingdom's most famous coastal city attracts fifteen million tourists every year. While tourism fills the royal treasury, giant cruise ships are eroding the foundations, local residents can no longer afford rent, and traditional bakeries have been replaced by cheap souvenir shops.",
+                    question: "If you were ruler for a day, how would you rescue this historic city from overtourism?",
+                    followup: "How would you balance local residents' rights with the businesses that rely on visitors?",
+                    vocab: ["treasury", "eroding", "foundations", "afford", "overtourism"]
+                }
+            },
+            {
+                tag: "Justice & Law",
+                easy: {
+                    title: "Full Prisons",
+                    reading: "Your royal prisons are completely full. Most prisoners are not violent; they stole food or small amounts of money because they were poor. Keeping someone in prison costs more money than paying for university, and most prisoners break the law again after they leave.",
+                    question: "If you were in charge of justice for a day, how would you punish and help people who break the law?",
+                    followup: "What punishments work better than prison for small crimes?",
+                    vocab: ["prisons", "violent", "stole", "break the law", "punishments"]
+                },
+                harder: {
+                    title: "Overcrowded Dungeons",
+                    reading: "Your royal prisons are overflowing, mostly with non-violent offenders who committed petty theft or minor financial crimes out of desperation. Keeping each prisoner locked up costs the crown more per year than sending a citizen to the finest university, and most re-offend within two years of release.",
+                    question: "If you held the royal seal of justice today, how would you reform punishment and rehabilitation?",
+                    followup: "What alternatives to prison would actually reduce crime in your kingdom?",
+                    vocab: ["overflowing", "offenders", "petty theft", "desperation", "rehabilitation"]
+                }
+            },
+            {
+                tag: "Public Health",
+                easy: {
+                    title: "Cheap Junk Food",
+                    reading: "Fast food, sweets, and fizzy drinks are much cheaper than fresh fruit and vegetables in your shops. Hospitals are full of sick people, but food companies say adults should be free to eat whatever they want.",
+                    question: "If you were King or Queen for a day, would you make junk food more expensive, make fruit cheaper, or do nothing?",
+                    followup: "Should the government tell people what to eat?",
+                    vocab: ["fizzy drinks", "fresh", "sick", "expensive", "government"]
+                },
+                harder: {
+                    title: "The Sugar and Fast-Food Dilemma",
+                    reading: "Ultra-processed foods and sugary drinks are cheaper than fresh fruit and vegetables in every market across your land. Hospitals are struggling to cope with preventable illnesses, yet food corporations argue that adults should have total freedom to choose what they eat.",
+                    question: "If you were King or Queen for a day, would you tax unhealthy food, subsidize fresh produce, or stay out of people's kitchens?",
+                    followup: "Where should personal freedom end and government responsibility begin?",
+                    vocab: ["ultra-processed", "cope with", "preventable", "subsidize", "produce"]
+                }
+            },
+            {
+                tag: "Media & Free Speech",
+                easy: {
+                    title: "Fake News Everywhere",
+                    reading: "Websites and social media spread shocking lies every day because angry clicks make money. Honest newspapers are closing down, and people no longer trust doctors, scientists, or judges—even during serious emergencies.",
+                    question: "If you were King or Queen for a day, how would you stop fake news without taking away people's freedom to speak?",
+                    followup: "Who should decide what is true and what is false?",
+                    vocab: ["shocking", "lies", "trust", "emergencies", "freedom"]
+                },
+                harder: {
+                    title: "The Rumour Mill",
+                    reading: "Anonymous town criers and digital platforms spread sensational lies every day because outrage generates huge advertising profits. Honest journalists are going bankrupt, and citizens no longer trust doctors, scientists, or courts—even during emergencies.",
+                    question: "If you ruled for a day, how would you combat deliberate misinformation without becoming a censor who destroys free speech?",
+                    followup: "Who gets to decide what counts as 'truth' in your kingdom?",
+                    vocab: ["anonymous", "sensational", "outrage", "bankrupt", "deliberate"]
+                }
+            },
+            {
+                tag: "Housing Crisis",
+                easy: {
+                    title: "Nowhere Affordable to Live",
+                    reading: "Rich investors and holiday websites have bought half the apartments in your cities. Nurses, teachers, and young families must travel two hours to work every day because city homes are far too expensive.",
+                    question: "If you could sign one royal rule about houses tonight, what would you do?",
+                    followup: "Would you limit rent prices, ban holiday apartments, or build new homes?",
+                    vocab: ["investors", "apartments", "travel", "expensive", "limit"]
+                },
+                harder: {
+                    title: "Castles for Investors, Tents for Workers",
+                    reading: "Wealthy foreign investors and short-term holiday rental platforms have bought up half the apartments in your kingdom's cities. Nurses, teachers, and young families must commute two hours each way because they cannot afford to live near their workplaces.",
+                    question: "If you could sign a single royal housing edict tonight, what drastic measure would you take?",
+                    followup: "Would you cap rents, ban short-term holiday rentals, or build massive state housing?",
+                    vocab: ["investors", "commute", "edict", "drastic", "cap rents"]
+                }
+            },
+            {
+                tag: "Culture & Language",
+                easy: {
+                    title: "Disappearing Local Traditions",
+                    reading: "Because of global TV and the internet, young people in your country all use the same slang, eat the same imported snacks, and have forgotten their local dialects, folk songs, and village festivals.",
+                    question: "If you were King or Queen for a day, would you try to save old local traditions or let culture change naturally?",
+                    followup: "Can a ruler make young people care about old traditions?",
+                    vocab: ["slang", "imported", "forgotten", "festivals", "traditions"]
+                },
+                harder: {
+                    title: "Vanishing Dialects and Traditions",
+                    reading: "Due to global television and internet culture, young people in your kingdom all speak the same standardized slang, eat the same imported snacks, and have forgotten regional dialects, folk music, and local festivals that existed for centuries.",
+                    question: "If you were monarch for a day, would you actively protect local traditions or let culture evolve naturally?",
+                    followup: "Can a government ever force young people to care about heritage?",
+                    vocab: ["standardized", "dialects", "centuries", "heritage", "evolve"]
+                }
+            },
+            {
+                tag: "Energy & Climate",
+                easy: {
+                    title: "Cold Winter, Expensive Energy",
+                    reading: "A freezing winter has arrived and energy prices are three times higher than normal. Your advisors give you two choices: open dirty coal mines to give people cheap heat right now, or save electricity while building clean wind and solar power for the future.",
+                    question: "If you sat on the throne this winter, how would you keep homes warm without hurting the planet?",
+                    followup: "Is it fair to ask poor families to pay more today to help the future?",
+                    vocab: ["freezing", "advisors", "coal mines", "save", "planet"]
+                },
+                harder: {
+                    title: "The Winter Power Shortage",
+                    reading: "A severe cold snap has hit your realm just as fuel prices have tripled. Your advisors offer two unpleasant options: reopen dirty coal mines immediately to keep homes warm and cheap, or ration electricity while investing heavily in wind and solar power for the future.",
+                    question: "If you were on the throne this winter, how would you keep your citizens warm without destroying the environment?",
+                    followup: "How do you ask struggling families to make sacrifices today for benefits twenty years from now?",
+                    vocab: ["cold snap", "advisors", "coal mines", "ration", "sacrifices"]
+                }
+            },
+            {
+                tag: "Civic Duty",
+                easy: {
+                    title: "Nobody Votes Anymore",
+                    reading: "Less than 35% of people vote in your country's elections. People complain every day about bad roads, poor schools, and dishonest leaders, yet almost nobody goes to town meetings or votes on election day.",
+                    question: "If you were King or Queen for a day, how would you get people to care and vote again?",
+                    followup: "Would you fine people who don't vote, or give rewards to people who do?",
+                    vocab: ["elections", "complain", "dishonest", "meetings", "rewards"]
+                },
+                harder: {
+                    title: "The Apathetic Electorate",
+                    reading: "Voter turnout in your kingdom has dropped below 35%. Citizens complain constantly about corruption and poor public services, yet almost nobody attends town meetings, volunteers, or bothers to cast a ballot when elections arrive.",
+                    question: "If you were King or Queen for a day, how would you re-engage indifferent citizens in public life?",
+                    followup: "Would you make voting mandatory with fines, or reward civic participation?",
+                    vocab: ["turnout", "apathetic", "corruption", "cast a ballot", "mandatory"]
+                }
+            },
+            {
+                tag: "Royal Treasury",
+                easy: {
+                    title: "A Mountain of Gold",
+                    reading: "Royal builders have found rare, valuable minerals under an empty mountain. This discovery will bring ten billion gold coins into the royal bank over the next ten years—a huge, unexpected gift for your country.",
+                    question: "If you controlled this money for one day, how would you spend or share it?",
+                    followup: "Would you lower taxes, build hospitals, or give free money to every person?",
+                    vocab: ["valuable", "empty", "discovery", "billion", "share"]
+                },
+                harder: {
+                    title: "An Unexpected Windfall",
+                    reading: "Royal engineers have discovered a vast deposit of rare minerals beneath an uninhabited mountain range. This discovery will bring ten billion gold crowns into the national treasury over the next decade—a once-in-a-century financial miracle.",
+                    question: "If you controlled this sudden fortune for one day, how would you divide it among your people?",
+                    followup: "Would you cut taxes, pay off national debt, fund science, or give every citizen a cash dividend?",
+                    vocab: ["windfall", "vast deposit", "uninhabited", "decade", "dividend"]
+                }
+            },
+            {
+                tag: "Animal Welfare & Food",
+                easy: {
+                    title: "Cheap Meat vs. Kindness to Animals",
+                    reading: "Giant factory farms in your country produce cheap meat and milk for millions of families. However, inspectors say the animals live in terrible, crowded conditions and farm waste is polluting the rivers.",
+                    question: "If you were King or Queen for a day, how would you protect animals without making food too expensive for poor families?",
+                    followup: "Should meat be a cheap everyday food or an expensive treat?",
+                    vocab: ["factory farms", "inspectors", "crowded", "waste", "polluting"]
+                },
+                harder: {
+                    title: "Industrial Farming vs. Cheap Meat",
+                    reading: "Mega-farms in your realm produce inexpensive meat and dairy for millions of working-class families, but animal welfare inspectors report cruel overcrowding and severe river pollution from agricultural waste.",
+                    question: "If you were sovereign for a day, how would you reform farming without making basic groceries unaffordable for poor families?",
+                    followup: "Should meat be treated as an everyday staple or a luxury product?",
+                    vocab: ["mega-farms", "welfare", "overcrowding", "sovereign", "staple"]
+                }
+            },
+            {
+                tag: "Generational Divide",
+                easy: {
+                    title: "More Old People, Fewer Young Workers",
+                    reading: "Thanks to great doctors, people in your kingdom are living past ninety years old. However, families are having fewer babies, so there are not enough young workers paying taxes to pay for everyone's pensions.",
+                    question: "If you had to solve this problem before tonight, what new rule would you make?",
+                    followup: "Would you ask people to work until age 70, welcome more workers from abroad, or help parents have more children?",
+                    vocab: ["ninety", "babies", "taxes", "pensions", "abroad"]
+                },
+                harder: {
+                    title: "The Pension Time Bomb",
+                    reading: "Thanks to brilliant royal doctors, citizens are living well into their nineties. However, the birth rate has fallen sharply, meaning there are fewer young workers paying taxes to support a rapidly growing retired population.",
+                    question: "If you had to solve this demographic puzzle before sunset, what bold policy would you enact?",
+                    followup: "Would you raise the retirement age, encourage immigration, or incentivize larger families?",
+                    vocab: ["birth rate", "sharply", "retired", "demographic", "enact"]
+                }
+            }
+        ];
+
+        // ==================== DATA: PART 2 (12 PROVOCATIVE TOPICS - EASY & HARDER) ====================
+        const part2Data = [
+            {
+                tag: "Work & Success",
+                easy: {
+                    title: "Luck Matters More Than Hard Work",
+                    text: "People love the nice story that anyone can become rich just by working hard. In truth, where you were born, who your parents know, and being in the right place at the right time matter much more than talent or effort. Calling billionaires 'self-made' just lets lucky people feel superior to poor people.",
+                    forCase: "Being born in a rich country or family gives people a huge head start that hard work alone cannot beat.",
+                    againstCase: "Good habits, practice, and never giving up help ordinary people succeed every day."
+                },
+                harder: {
+                    title: "Hard Work Is Overrated; Luck Rules Success",
+                    text: "Society loves the comforting fairy tale that anyone can succeed through grit and determination alone. In reality, where you were born, who your parents knew, and pure timing account for far more financial success than talent or effort. Celebrating 'self-made' billionaires simply allows the lucky to look down on the unlucky.",
+                    forCase: "Zip codes, family wealth, and random market timing create massive head starts that hard work alone rarely overcomes.",
+                    againstCase: "Dismissing effort breeds fatalism; disciplined habits, resilience, and skill-building consistently separate high achievers from peers."
+                }
+            },
+            {
+                tag: "Technology & Childhood",
+                easy: {
+                    title: "No Smartphones Before Age 16",
+                    text: "Giving a twelve-year-old a smartphone with full internet is like giving them cigarettes and whisky. We are doing a dangerous experiment on young people's sleep, focus, and mental health—and tired parents find it too easy to say yes.",
+                    forCase: "Teen stress and poor sleep went up when smartphones arrived; simple phones for calls and texts are much safer.",
+                    againstCase: "Bans make phones more exciting; parents and schools should teach children how to use technology safely."
+                },
+                harder: {
+                    title: "Smartphones Should Be Banned Until Age 16",
+                    text: "Giving a twelve-year-old a smartphone with unrestricted internet access is the modern equivalent of handing them a packet of cigarettes and a bottle of whisky. We are running a reckless, untested psychological experiment on an entire generation's attention span, sleep, and mental health—and parents are too tired to say no.",
+                    forCase: "Rates of teen anxiety, cyberbullying, and sleep deprivation surged alongside smartphone adoption; simple flip-phones solve safety needs.",
+                    againstCase: "Bans create forbidden fruit and leave teens unprepared for digital life; education and parental involvement work better than prohibition."
+                }
+            },
+            {
+                tag: "Culture & Travel",
+                easy: {
+                    title: "Mass Tourism Is Ruining Famous Places",
+                    text: "Most travel today is not about learning new cultures—it is just ticking boxes to post photos on social media. Millions of tourists fly across the world to stand in the same lines, take the exact same selfie, and turn real neighbourhoods into fake theme parks.",
+                    forCase: "Too many tourists push up rent prices, damage nature, and replace local shops with souvenir stalls.",
+                    againstCase: "Tourism creates jobs, pays to protect old buildings, and helps people understand other countries."
+                },
+                harder: {
+                    title: "Modern Tourism Destroys What It Claims to Love",
+                    text: "Most international travel today is not about cultural curiosity—it is checklist consumption designed for social media validation. Millions of people fly thousands of miles only to stand in identical queues, take the exact same photograph, and turn authentic neighbourhoods into soulless theme parks.",
+                    forCase: "Overtourism inflates local housing prices, damages ecosystems, and homogenizes historic city centers into souvenir zones.",
+                    againstCase: "Tourism funds heritage conservation, lifts millions out of poverty, and builds genuine empathy between different cultures."
+                }
+            },
+            {
+                tag: "Education & Jobs",
+                easy: {
+                    title: "University Degrees Cost Too Much and Teach Too Little",
+                    text: "Except for doctors, lawyers, and engineers, a four-year university degree mostly proves that you can sit in class and pay high fees. Companies use degrees as an easy filter, forcing young people into debt to study theory they forget six months after starting work.",
+                    forCase: "Hands-on training and work experience show real skills faster and without huge student loans.",
+                    againstCase: "University teaches people how to think deeply, research facts, and understand the wider world."
+                },
+                harder: {
+                    title: "University Degrees Have Become Expensive Receipts",
+                    text: "For most professions outside medicine, law, and engineering, a four-year university degree proves little more than patience and the ability to pay tuition. Employers use degrees as a lazy filter, forcing young people into debt to learn theory they will forget within six months of starting a real job.",
+                    forCase: "Practical apprenticeships and portfolios demonstrate real competence faster and without saddling young adults with massive debt.",
+                    againstCase: "Higher education teaches critical thinking, research rigor, and broad civic literacy that narrow job training never provides."
+                }
+            },
+            {
+                tag: "Social Etiquette",
+                easy: {
+                    title: "Polite White Lies Are Better Than 'Brutal Honesty'",
+                    text: "People who call themselves 'brutally honest' usually enjoy being rude more than being truthful. Small polite lies and knowing when to stay quiet are not fake—they are the friendly habits that stop families, friends, and coworkers from fighting all the time.",
+                    forCase: "Being kind means thinking about how our words hurt others; harsh comments rarely help anyone improve.",
+                    againstCase: "Too much politeness hides real problems and wastes time when people need to hear the truth."
+                },
+                harder: {
+                    title: "Brutal Honesty Is Usually Just Cruelty in Disguise",
+                    text: "People who proudly describe themselves as 'brutally honest' almost always care far more about the brutality than the honesty. Polite white lies, tact, and strategic silence are not signs of hypocrisy—they are the essential social lubricants that prevent friendships, families, and workplaces from tearing themselves apart.",
+                    forCase: "Empathy requires filtering how and when we deliver criticism; unsolicited bluntness damages trust without helping anyone improve.",
+                    againstCase: "Excessive politeness enables bad decisions, breeds passive-aggressive resentment, and wastes time when clear feedback is needed."
+                }
+            },
+            {
+                tag: "Environment",
+                easy: {
+                    title: "Washing Yoghurt Pots Will Not Save the Earth",
+                    text: "Spending twenty minutes washing plastic pots and sorting rubbish makes ordinary people feel good, but it barely helps the planet. Big oil and plastic companies invented 'personal recycling' to blame normal shoppers so governments wouldn't punish big factories.",
+                    forCase: "A small number of giant companies create most pollution and plastic; strict laws on industry matter most.",
+                    againstCase: "Everyday habits show politicians that voters care, and small actions add up across millions of homes."
+                },
+                harder: {
+                    title: "Individual Recycling Is a Corporate Distraction",
+                    text: "Spending twenty minutes washing out yoghurt pots and sorting plastic lids makes consumers feel virtuous while achieving almost nothing for the planet. Giant fossil-fuel and packaging corporations invented the 'personal carbon footprint' to shift blame onto ordinary citizens so governments wouldn't regulate industry.",
+                    forCase: "A tiny fraction of global corporations produce the vast majority of emissions and single-use plastic waste; systemic laws matter most.",
+                    againstCase: "Cultural habits drive political will and consumer demand; personal responsibility and systemic regulation reinforce each other."
+                }
+            },
+            {
+                tag: "Modern Romance",
+                easy: {
+                    title: "Dating Apps Have Damaged Modern Love",
+                    text: "Turning people into photos that you swipe left or right in half a second trains us to treat partners like shoes in an online shop. Thinking there are thousands of better choices makes people afraid to commit and blind to real-life chemistry.",
+                    forCase: "Too many choices make people picky, impatient, and quick to disappear instead of building real trust.",
+                    againstCase: "Dating apps help busy workers and shy people meet great partners they would never meet at work or school."
+                },
+                harder: {
+                    title: "Dating Apps Have Ruined Human Connection",
+                    text: "By turning human beings into a catalogue of profiles that can be swiped away in half a second, dating apps have trained us to treat partners like disposable consumer goods. The illusion of infinite choice makes people terrified of commitment and unable to appreciate real-world chemistry.",
+                    forCase: "Choice overload leads to superficial judgments, ghosting, and chronic dissatisfaction instead of building patience and trust.",
+                    againstCase: "Apps help busy adults, introverts, and minorities find compatible partners far outside narrow social or workplace circles."
+                }
+            },
+            {
+                tag: "Art & Morality",
+                easy: {
+                    title: "Enjoy the Art, Even If the Artist Was Bad",
+                    text: "If we stop reading books, watching movies, or listening to songs made by selfish or cruel people, our museums and libraries will be almost empty. Great art often comes from difficult people, and judging old masterpieces by today's rules makes our culture poorer.",
+                    forCase: "Once a song or painting is finished, we can admire its beauty without approving of the artist's bad behaviour.",
+                    againstCase: "Buying tickets or music from living abusers rewards bad behaviour and hurts their victims."
+                },
+                harder: {
+                    title: "We Must Separate the Art from the Artist",
+                    text: "If we refuse to read books, watch films, or listen to music created by deeply flawed, arrogant, or immoral human beings, our museums and libraries will be nearly empty. Great art often emerges from troubled minds, and judging historical masterpieces by modern moral purity tests impoverishes human culture.",
+                    forCase: "A work of art stands independently once released; appreciating beauty does not mean endorsing the creator's personal failings.",
+                    againstCase: "Supporting living abusers financially or glorifying their legacy sends a message that fame excuses harm to real victims."
+                }
+            },
+            {
+                tag: "Democracy & Voting",
+                easy: {
+                    title: "Voters Should Pass a Short News Quiz First",
+                    text: "You cannot drive a car or cut hair for money without passing a test, yet people who cannot name their prime minister or find their country on a map can still vote on national laws. Uninformed voting hurts the whole country.",
+                    forCase: "When voters know the basic facts, politicians have to offer serious plans instead of empty slogans.",
+                    againstCase: "Voting tests in the past were used unfairly to stop poor people from voting; every adult deserves an equal voice."
+                },
+                harder: {
+                    title: "Voting Should Require a Basic Current-Affairs Quiz",
+                    text: "You cannot drive a car, cut someone's hair professionally, or practice medicine without proving basic competence, yet we allow citizens who cannot name their own prime minister or locate their country on a map to decide national economic policy. Ignorance at the ballot box harms everyone.",
+                    forCase: "Informed voters incentivize politicians to propose serious policies rather than relying on emotional slogans and misinformation.",
+                    againstCase: "Literacy or knowledge tests have historically been weaponized to disenfranchise poor and minority citizens; universal suffrage is sacred."
+                }
+            },
+            {
+                tag: "Money & Happiness",
+                easy: {
+                    title: "Money Really Does Buy Happiness",
+                    text: "The saying 'money can't buy happiness' was clearly invented by rich people so poor workers wouldn't ask for higher pay. Having enough money buys peace of mind, good doctors, safe streets, free time, and freedom from constant worry—which is what real happiness looks like.",
+                    forCase: "Not worrying about bills or rent reduces stress and gives families safety, health, and freedom.",
+                    againstCase: "Once your basic bills are paid, extra money brings much less joy than good friends, love, and health."
+                },
+                harder: {
+                    title: "Anyone Who Says Money Can't Buy Happiness Has Never Been Poor",
+                    text: "The proverb 'money doesn't buy happiness' was clearly invented by wealthy people to keep the working classes content with low wages. Financial security buys peace of mind, quality healthcare, safe neighbourhoods, free time, and freedom from constant panic—which are the true foundations of human happiness.",
+                    forCase: "Eliminating financial stress dramatically improves mental and physical well-being, family stability, and personal autonomy.",
+                    againstCase: "Beyond basic comfort and security, extra wealth brings diminishing returns compared to deep friendships, purpose, and health."
+                }
+            },
+            {
+                tag: "Language & Identity",
+                easy: {
+                    title: "Global English Is Weakening Local Languages",
+                    text: "When universities, scientists, and big businesses only use English, local languages slowly lose the words needed for modern life. Every language has its own special way of seeing the world—so when smaller languages disappear, humans lose unique ways of thinking.",
+                    forCase: "Keeping local languages strong protects history, poetry, and unique ways of expressing feelings.",
+                    againstCase: "Having one shared world language helps doctors, scientists, and travellers work together easily."
+                },
+                harder: {
+                    title: "Global English Is Quietly Colonizing Our Minds",
+                    text: "When universities, scientists, and businesses operate exclusively in English, native languages slowly lose the vocabulary needed to discuss modern ideas. Worse still, every language carries a unique worldview—so when smaller languages fade, humanity loses irreplaceable ways of thinking and feeling.",
+                    forCase: "Linguistic diversity preserves cultural memory and unique cognitive perspectives that cannot be neatly translated into English.",
+                    againstCase: "A shared global lingua franca accelerates scientific cooperation, international trade, and cross-border friendship."
+                }
+            },
+            {
+                tag: "Privacy & Security",
+                easy: {
+                    title: "We Sold Our Privacy for Free Apps",
+                    text: "People say they are angry when governments or tech companies watch them online, yet they gladly give away their location, photos, and private habits to free apps just to watch cat videos and order pizza faster. Nobody stole our privacy; we traded it for convenience.",
+                    forCase: "Most people click 'Accept All' without reading because free apps and fast delivery feel worth it.",
+                    againstCase: "Modern life forces us to use phones and apps for banking, work, and travel, so people have no real choice."
+                },
+                harder: {
+                    title: "Privacy Is Dead—And Most People Gladly Sold It",
+                    text: "Citizens claim to be outraged about government surveillance and corporate data harvesting, yet they happily hand over their location, photos, medical habits, and private thoughts to free apps in exchange for funny cat videos and faster food delivery. We didn't lose our privacy; we traded it for convenience.",
+                    forCase: "Consumers routinely ignore terms of service and trade personal data for minor discounts and entertainment.",
+                    againstCase: "Dark patterns and monopolies give people no realistic choice; participating in modern society virtually requires digital tracking."
+                }
+            }
+        ];
+
+        // ==================== STATE MANAGEMENT ====================
+        let p1Order = [];
+        let p2Order = [];
+        let p1Index = 0;
+        let p2Index = 0;
+        let p1NotesStore = {};
+        let currentPart = 1;
+        let currentDifficulty = 'harder'; // 'easy' or 'harder'
+
+        // Timer state
+        let timerSeconds = 120;
+        let timerInterval = null;
+        let timerRunning = false;
+
+        function shuffleArray(length) {
+            const arr = Array.from({ length }, (_, i) => i);
+            for (let i = arr.length - 1; i > 0; i--) {
+                const j = Math.floor(Math.random() * (i + 1));
+                [arr[i], arr[j]] = [arr[j], arr[i]];
+            }
+            return arr;
+        }
+
+        // ==================== INITIALIZATION ====================
+        document.addEventListener('DOMContentLoaded', () => {
+            p1Order = shuffleArray(part1Data.length);
+            p2Order = shuffleArray(part2Data.length);
+            updateDifficultyUI();
+            renderPart1();
+            renderPart2();
+        });
+
+        // ==================== DIFFICULTY SWITCHING ====================
+        function setDifficulty(level) {
+            currentDifficulty = level;
+            window.speechSynthesis && window.speechSynthesis.cancel();
+            updateDifficultyUI();
+            renderPart1();
+            renderPart2();
+        }
+
+        function updateDifficultyUI() {
+            const btnEasy = document.getElementById('btn-easy');
+            const btnHarder = document.getElementById('btn-harder');
+            const isDark = currentPart === 2;
+
+            if (currentDifficulty === 'easy') {
+                btnEasy.className = "px-3 py-1.5 rounded-lg text-xs font-bold transition-all flex items-center gap-1.5 bg-emerald-600 text-white shadow-sm";
+                btnHarder.className = isDark
+                    ? "px-3 py-1.5 rounded-lg text-xs font-bold transition-all flex items-center gap-1.5 text-slate-300 hover:text-white"
+                    : "px-3 py-1.5 rounded-lg text-xs font-bold transition-all flex items-center gap-1.5 text-slate-600 hover:text-slate-900";
+            } else {
+                btnHarder.className = isDark
+                    ? "px-3 py-1.5 rounded-lg text-xs font-bold transition-all flex items-center gap-1.5 bg-amber-500 text-slate-950 shadow-sm"
+                    : "px-3 py-1.5 rounded-lg text-xs font-bold transition-all flex items-center gap-1.5 bg-slate-800 text-white shadow-sm";
+                btnEasy.className = isDark
+                    ? "px-3 py-1.5 rounded-lg text-xs font-bold transition-all flex items-center gap-1.5 text-slate-300 hover:text-white"
+                    : "px-3 py-1.5 rounded-lg text-xs font-bold transition-all flex items-center gap-1.5 text-slate-600 hover:text-slate-900";
+            }
+
+            // Update card level badges
+            const p1Badge = document.getElementById('p1-level-badge');
+            const p2Badge = document.getElementById('p2-level-badge');
+
+            if (currentDifficulty === 'easy') {
+                p1Badge.textContent = "Easy Level";
+                p1Badge.className = "text-[11px] font-bold uppercase tracking-wider px-2.5 py-1 rounded-lg bg-emerald-100 text-emerald-900 border border-emerald-200";
+                p2Badge.textContent = "Easy Level";
+                p2Badge.className = "text-[11px] font-bold uppercase tracking-wider px-2.5 py-1 rounded-lg bg-emerald-950 text-emerald-300 border border-emerald-700/60";
+            } else {
+                p1Badge.textContent = "Harder Level";
+                p1Badge.className = "text-[11px] font-bold uppercase tracking-wider px-2.5 py-1 rounded-lg bg-slate-100 text-slate-700 border border-slate-200";
+                p2Badge.textContent = "Harder Level";
+                p2Badge.className = "text-[11px] font-bold uppercase tracking-wider px-2.5 py-1 rounded-lg bg-slate-800 text-amber-300 border border-slate-700";
+            }
+
+            // Update speaking starters & debate phrases to match difficulty
+            const p1Starters = document.getElementById('p1-starters');
+            if (currentDifficulty === 'easy') {
+                p1Starters.innerHTML = `
+                    <li>• "If I were King/Queen, I would..."</li>
+                    <li>• "First, I would change... because..."</li>
+                    <li>• "I wouldn't punish people; instead, I would..."</li>
+                `;
+            } else {
+                p1Starters.innerHTML = `
+                    <li>• "If I were King/Queen, my first decree would be to..."</li>
+                    <li>• "Rather than punishing people, I would..."</li>
+                    <li>• "The main consequence of this policy would be..."</li>
+                `;
+            }
+
+            const p2Phrases = document.getElementById('p2-phrases');
+            if (currentDifficulty === 'easy') {
+                p2Phrases.innerHTML = `
+                    <div>• "I agree with this idea because..."</div>
+                    <div>• "I see your point, but I think..."</div>
+                    <div>• "I'm sorry, I don't agree because..."</div>
+                    <div>• "It depends on the situation, for example..."</div>
+                `;
+            } else {
+                p2Phrases.innerHTML = `
+                    <div>• "I see where you're coming from, however..."</div>
+                    <div>• "That's a fair point on paper, yet in practice..."</div>
+                    <div>• "I'm afraid I have to push back on that idea because..."</div>
+                    <div>• "Let's play devil's advocate for a moment..."</div>
+                `;
+            }
+        }
+
+        // ==================== TAB SWITCHING ====================
+        function switchPart(part) {
+            currentPart = part;
+            window.speechSynthesis && window.speechSynthesis.cancel();
+
+            const body = document.getElementById('app-body');
+            const header = document.getElementById('top-header');
+            const brandTitle = document.getElementById('brand-title');
+            const modeSwitcher = document.getElementById('mode-switcher');
+            const levelSwitcher = document.getElementById('level-switcher');
+            const tab1 = document.getElementById('tab-part1');
+            const tab2 = document.getElementById('tab-part2');
+            const sec1 = document.getElementById('section-part1');
+            const sec2 = document.getElementById('section-part2');
+
+            if (part === 1) {
+                body.classList.remove('debate-mode');
+                header.className = "bg-white/95 backdrop-blur-md border-b border-stone-200 sticky top-0 z-50 transition-colors duration-500";
+                brandTitle.className = "font-display text-base sm:text-lg font-extrabold tracking-wide text-slate-900 transition-colors";
+                modeSwitcher.className = "flex items-center gap-1.5 bg-stone-100 p-1.5 rounded-2xl border border-stone-200";
+                levelSwitcher.className = "flex items-center gap-1 bg-stone-100 p-1 rounded-xl border border-stone-200";
+
+                tab1.className = "px-3.5 py-2 rounded-xl text-xs sm:text-sm font-bold transition-all flex items-center gap-2 bg-amber-700 text-white shadow-sm";
+                tab2.className = "px-3.5 py-2 rounded-xl text-xs sm:text-sm font-bold transition-all flex items-center gap-2 text-slate-600 hover:text-slate-900";
+
+                sec2.classList.add('hidden');
+                sec1.classList.remove('hidden');
+            } else {
+                body.classList.add('debate-mode');
+                header.className = "bg-slate-900/95 backdrop-blur-md border-b border-slate-800 sticky top-0 z-50 transition-colors duration-500";
+                brandTitle.className = "font-display text-base sm:text-lg font-extrabold tracking-wide text-white transition-colors";
+                modeSwitcher.className = "flex items-center gap-1.5 bg-slate-800 p-1.5 rounded-2xl border border-slate-700";
+                levelSwitcher.className = "flex items-center gap-1 bg-slate-800 p-1 rounded-xl border border-slate-700";
+
+                tab1.className = "px-3.5 py-2 rounded-xl text-xs sm:text-sm font-bold transition-all flex items-center gap-2 text-slate-300 hover:text-white";
+                tab2.className = "px-3.5 py-2 rounded-xl text-xs sm:text-sm font-bold transition-all flex items-center gap-2 bg-rose-600 text-white shadow-sm";
+
+                sec1.classList.add('hidden');
+                sec2.classList.remove('hidden');
+            }
+            updateDifficultyUI();
+        }
+
+        // ==================== RENDER PART 1 ====================
+        function renderPart1() {
+            const dataIdx = p1Order[p1Index];
+            const item = part1Data[dataIdx];
+            const content = item[currentDifficulty];
+
+            document.getElementById('p1-counter').textContent = `${p1Index + 1} / ${part1Data.length}`;
+            document.getElementById('p1-tag').textContent = item.tag;
+            document.getElementById('p1-title').textContent = content.title;
+            document.getElementById('p1-reading').textContent = content.reading;
+            document.getElementById('p1-question').textContent = content.question;
+            document.getElementById('p1-followup').textContent = content.followup;
+
+            // Vocab pills
+            const vocabContainer = document.getElementById('p1-vocab');
+            vocabContainer.innerHTML = content.vocab.map(word => 
+                `<span class="px-2.5 py-1 rounded-md bg-amber-100/80 text-amber-900 font-semibold text-xs">${word}</span>`
+            ).join('');
+
+            // Restore notes for this specific scenario
+            const notesEl = document.getElementById('p1-notes');
+            notesEl.value = p1NotesStore[dataIdx] || '';
+            notesEl.oninput = (e) => { p1NotesStore[dataIdx] = e.target.value; };
+
+            // Progress dots
+            const dotsEl = document.getElementById('p1-dots');
+            dotsEl.innerHTML = part1Data.map((_, i) => 
+                `<button onclick="jumpToCard(1, ${i})" class="h-2 rounded-full transition-all ${i === p1Index ? 'w-5 bg-amber-700' : 'w-2 bg-stone-300 hover:bg-amber-400'}" aria-label="Scenario ${i+1}"></button>`
+            ).join('');
+        }
+
+        // ==================== RENDER PART 2 ====================
+        function renderPart2() {
+            const dataIdx = p2Order[p2Index];
+            const item = part2Data[dataIdx];
+            const content = item[currentDifficulty];
+
+            document.getElementById('p2-counter').textContent = `${p2Index + 1} / ${part2Data.length}`;
+            document.getElementById('p2-tag').textContent = item.tag;
+            document.getElementById('p2-title').textContent = content.title;
+            document.getElementById('p2-text').textContent = content.text;
+            document.getElementById('p2-for').textContent = content.forCase;
+            document.getElementById('p2-against').textContent = content.againstCase;
+
+            // Reset stance UI
+            document.querySelectorAll('.stance-btn').forEach(btn => {
+                btn.classList.remove('ring-2', 'ring-white', 'bg-slate-800');
+            });
+            const fb = document.getElementById('stance-feedback');
+            fb.classList.add('hidden');
+            fb.textContent = '';
+
+            // Progress dots
+            const dotsEl = document.getElementById('p2-dots');
+            dotsEl.innerHTML = part2Data.map((_, i) => 
+                `<button onclick="jumpToCard(2, ${i})" class="h-2 rounded-full transition-all ${i === p2Index ? 'w-5 bg-rose-500' : 'w-2 bg-slate-700 hover:bg-rose-400'}" aria-label="Topic ${i+1}"></button>`
+            ).join('');
+        }
+
+        // ==================== NAVIGATION & SHUFFLE ====================
+        function nextCard(part) {
+            window.speechSynthesis && window.speechSynthesis.cancel();
+            if (part === 1) {
+                p1Index = (p1Index + 1) % part1Data.length;
+                renderPart1();
+            } else {
+                p2Index = (p2Index + 1) % part2Data.length;
+                renderPart2();
+            }
+        }
+
+        function prevCard(part) {
+            window.speechSynthesis && window.speechSynthesis.cancel();
+            if (part === 1) {
+                p1Index = (p1Index - 1 + part1Data.length) % part1Data.length;
+                renderPart1();
+            } else {
+                p2Index = (p2Index - 1 + part2Data.length) % part2Data.length;
+                renderPart2();
+            }
+        }
+
+        function jumpToCard(part, index) {
+            window.speechSynthesis && window.speechSynthesis.cancel();
+            if (part === 1) {
+                p1Index = index;
+                renderPart1();
+            } else {
+                p2Index = index;
+                renderPart2();
+            }
+        }
+
+        function reshufflePart1() {
+            window.speechSynthesis && window.speechSynthesis.cancel();
+            p1Order = shuffleArray(part1Data.length);
+            p1Index = 0;
+            renderPart1();
+        }
+
+        function reshufflePart2() {
+            window.speechSynthesis && window.speechSynthesis.cancel();
+            p2Order = shuffleArray(part2Data.length);
+            p2Index = 0;
+            renderPart2();
+        }
+
+        // ==================== EXTRA CLASSROOM TOOLS ====================
+        function toggleDrawer(id) {
+            const el = document.getElementById(id);
+            const icon = document.getElementById(id + '-icon');
+            el.classList.toggle('hidden');
+            if (icon) icon.classList.toggle('rotate-180');
+        }
+
+        // Web Speech API Text-to-Speech
+        function speakText(part) {
+            if (!('speechSynthesis' in window)) {
+                alert('Text-to-speech is not supported in this browser.');
+                return;
+            }
+            window.speechSynthesis.cancel();
+
+            let textToRead = '';
+            if (part === 'p1') {
+                const content = part1Data[p1Order[p1Index]][currentDifficulty];
+                textToRead = `${content.title}. ${content.reading} ${content.question}`;
+            } else {
+                const content = part2Data[p2Order[p2Index]][currentDifficulty];
+                textToRead = `${content.title}. ${content.text}`;
+            }
+
+            const utterance = new SpeechSynthesisUtterance(textToRead);
+            utterance.lang = 'en-GB';
+            utterance.rate = currentDifficulty === 'easy' ? 0.88 : 0.96;
+            window.speechSynthesis.speak(utterance);
+        }
+
+        // Interactive Stance & Devil's Advocate
+        function setStance(stance) {
+            document.querySelectorAll('.stance-btn').forEach(btn => {
+                btn.classList.remove('ring-2', 'ring-white', 'bg-slate-800');
+            });
+            const activeBtn = document.getElementById('stance-' + stance);
+            if (activeBtn) activeBtn.classList.add('ring-2', 'ring-white', 'bg-slate-800');
+
+            const fb = document.getElementById('stance-feedback');
+            fb.classList.remove('hidden');
+            if (currentDifficulty === 'easy') {
+                if (stance === 'agree') {
+                    fb.textContent = "Speaking Goal: Give two clear reasons why you agree and one real-life example.";
+                } else if (stance === 'disagree') {
+                    fb.textContent = "Speaking Goal: Explain politely why you disagree and give a better solution.";
+                } else {
+                    fb.textContent = "Speaking Goal: Explain when this statement is true and when it is false.";
+                }
+            } else {
+                if (stance === 'agree') {
+                    fb.textContent = "Challenge: Defend your agreement using at least one real-world example, then acknowledge the strongest counter-argument.";
+                } else if (stance === 'disagree') {
+                    fb.textContent = "Challenge: Dismantle the provocation politely without dismissing the grain of truth inside it.";
+                } else {
+                    fb.textContent = "Challenge: Explain the exact boundary line—under what conditions is the statement true, and when does it fail?";
+                }
+            }
+        }
+
+        function assignDevilsAdvocate() {
+            const roles = currentDifficulty === 'easy'
+                ? [
+                    { stance: 'agree', msg: "🎭 Role Challenge: Argue IN FAVOUR of this idea for 60 seconds—even if you don't agree!" },
+                    { stance: 'disagree', msg: "🎭 Role Challenge: Argue AGAINST this idea for 60 seconds—even if you agree!" }
+                ]
+                : [
+                    { stance: 'agree', msg: "🎭 Devil's Advocate Role Assigned: You MUST argue IN FAVOUR of this statement for 60 seconds—even if you hate it!" },
+                    { stance: 'disagree', msg: "🎭 Devil's Advocate Role Assigned: You MUST argue AGAINST this statement for 60 seconds—even if you secretly agree!" }
+                ];
+            const pick = roles[Math.floor(Math.random() * roles.length)];
+            setStance(pick.stance);
+            document.getElementById('stance-feedback').textContent = pick.msg;
+        }
+
+        // 2-Minute Debate Stopwatch
+        function toggleDebateTimer() {
+            const display = document.getElementById('timer-display');
+            if (timerRunning) {
+                clearInterval(timerInterval);
+                timerRunning = false;
+                timerSeconds = 120;
+                display.textContent = "02:00";
+                return;
+            }
+            timerRunning = true;
+            timerInterval = setInterval(() => {
+                timerSeconds--;
+                const mins = String(Math.floor(timerSeconds / 60)).padStart(2, '0');
+                const secs = String(timerSeconds % 60).padStart(2, '0');
+                display.textContent = `${mins}:${secs}`;
+                if (timerSeconds <= 0) {
+                    clearInterval(timerInterval);
+                    timerRunning = false;
+                    display.textContent = "Time's Up!";
+                    setTimeout(() => {
+                        timerSeconds = 120;
+                        display.textContent = "02:00";
+                    }, 3000);
+                }
+            }, 1000);
+        }
+
+        // Keyboard arrow navigation
+        document.addEventListener('keydown', (e) => {
+            if (e.target.tagName === 'TEXTAREA' || e.target.tagName === 'INPUT') return;
+            if (e.key === 'ArrowRight') nextCard(currentPart);
+            if (e.key === 'ArrowLeft') prevCard(currentPart);
+        });
+    </script>
+</body>
+</html>
